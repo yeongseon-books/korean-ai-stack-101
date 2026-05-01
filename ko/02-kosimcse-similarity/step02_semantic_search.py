@@ -16,8 +16,8 @@ DOCUMENTS = [
 
 def semantic_search(query: str, documents: list[str], model_name: str) -> list[tuple[str, float]]:
     model = SentenceTransformer(model_name)
-    query_embedding = model.encode([query], normalize_embeddings=True)[0]
-    document_embeddings = model.encode(documents, normalize_embeddings=True)
+    query_embedding = model.encode([query], normalize_embeddings=True, convert_to_numpy=True)[0]
+    document_embeddings = model.encode(documents, normalize_embeddings=True, convert_to_numpy=True)
     scores = document_embeddings @ query_embedding
     ranked = sorted(zip(documents, scores.tolist()), key=lambda item: item[1], reverse=True)
     return ranked

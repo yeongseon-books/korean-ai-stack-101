@@ -20,7 +20,7 @@ def pairwise_similarity(embeddings: np.ndarray) -> np.ndarray:
 def main() -> None:
     print(f"Loading model: {MODEL_NAME}")
     model = SentenceTransformer(MODEL_NAME)
-    embeddings = model.encode(SENTENCES, normalize_embeddings=True)
+    embeddings = model.encode(SENTENCES, normalize_embeddings=True, convert_to_numpy=True)
     scores = pairwise_similarity(embeddings)
     print("Sentence similarity matrix")
     print("=" * 40)

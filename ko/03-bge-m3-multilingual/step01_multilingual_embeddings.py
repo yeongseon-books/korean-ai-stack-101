@@ -1,37 +1,14 @@
-"""다국어 임베딩 모델로 한국어와 영어 문장을 함께 비교합니다."""
+"""BGE-M3 스타일 다국어 임베딩 예제."""
 
-from __future__ import annotations
+from pathlib import Path
+import sys
 
-from itertools import combinations
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
-import numpy as np
-from sentence_transformers import SentenceTransformer
-
-MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
-SENTENCES = [
-    "서울의 봄 날씨는 짧고 변덕스럽습니다.",
-    "Spring weather in Seoul is short and unpredictable.",
-    "제주도는 여름 휴가지로 인기가 많습니다.",
-    "Jeju Island is a popular summer destination.",
-]
-
-
-def cosine_similarity(left: np.ndarray, right: np.ndarray) -> float:
-    return float(np.dot(left, right) / (np.linalg.norm(left) * np.linalg.norm(right)))
-
-
-def main() -> None:
-    print(f"다국어 모델 로드: {MODEL_NAME}")
-    model = SentenceTransformer(MODEL_NAME)
-    embeddings = model.encode(SENTENCES, normalize_embeddings=True)
-    print("교차 언어 유사도 비교")
-    print("=" * 60)
-    for left_index, right_index in combinations(range(len(SENTENCES)), 2):
-        score = cosine_similarity(embeddings[left_index], embeddings[right_index])
-        print(f"{SENTENCES[left_index]} <> {SENTENCES[right_index]}")
-        print(f"유사도: {score:.4f}")
-        print("-" * 60)
+from shared.lessons import run_multilingual_demo
 
 
 if __name__ == "__main__":
-    main()
+    run_multilingual_demo("ko")

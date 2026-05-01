@@ -23,7 +23,7 @@ def cosine_similarity(left: np.ndarray, right: np.ndarray) -> float:
 def main() -> None:
     print(f"다국어 모델 로드: {MODEL_NAME}")
     model = SentenceTransformer(MODEL_NAME)
-    embeddings = model.encode(SENTENCES, normalize_embeddings=True)
+    embeddings = model.encode(SENTENCES, normalize_embeddings=True, convert_to_numpy=True)
     print("교차 언어 유사도 비교")
     print("=" * 60)
     for left_index, right_index in combinations(range(len(SENTENCES)), 2):

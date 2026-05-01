@@ -17,8 +17,8 @@ DOCUMENTS = [
 def main() -> None:
     print(f"Loading model: {MODEL_NAME}")
     model = SentenceTransformer(MODEL_NAME)
-    query_embedding = model.encode([QUERY], normalize_embeddings=True)[0]
-    document_embeddings = model.encode(DOCUMENTS, normalize_embeddings=True)
+    query_embedding = model.encode([QUERY], normalize_embeddings=True, convert_to_numpy=True)[0]
+    document_embeddings = model.encode(DOCUMENTS, normalize_embeddings=True, convert_to_numpy=True)
     scores = document_embeddings @ query_embedding
     ranking = sorted(zip(DOCUMENTS, scores.tolist()), key=lambda item: item[1], reverse=True)
     print(f"Korean query: {QUERY}")

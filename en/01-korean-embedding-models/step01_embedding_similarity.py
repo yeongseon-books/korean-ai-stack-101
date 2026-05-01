@@ -39,7 +39,7 @@ def main() -> None:
     print(f"Loading model: {MODEL_NAME}")
     model = SentenceTransformer(MODEL_NAME)
     flat_sentences = [sentence for pair in SENTENCE_PAIRS for sentence in pair]
-    embeddings = model.encode(flat_sentences, normalize_embeddings=True)
+    embeddings = model.encode(flat_sentences, normalize_embeddings=True, convert_to_numpy=True)
     print("Similarity results for sentence pairs")
     print("=" * 50)
     for line in format_scores(SENTENCE_PAIRS, embeddings):

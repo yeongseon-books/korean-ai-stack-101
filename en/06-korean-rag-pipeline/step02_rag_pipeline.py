@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from typing import Any
 
 import faiss
 from groq import Groq
@@ -27,9 +28,9 @@ def require_api_key() -> str:
 
 def retrieve(question: str, documents: list[str], top_k: int = 2) -> list[str]:
     model = SentenceTransformer(MODEL_NAME)
-    embeddings = model.encode(documents, normalize_embeddings=True).astype("float32")
-    question_embedding = model.encode([question], normalize_embeddings=True).astype("float32")
-    index = faiss.IndexFlatIP(embeddings.shape[1])
+    embeddings = model.encode(documents, normalize_embeddings=True, convert_to_numpy=True).astype("float32")
+    question_embedding = model.encode([question], normalize_embeddings=True, convert_to_numpy=True).astype("float32")
+    index: Any = faiss.IndexFlatIP(embeddings.shape[1])
     index.add(embeddings)
     _, indices = index.search(question_embedding, top_k)
     return [documents[index] for index in indices[0].tolist()]

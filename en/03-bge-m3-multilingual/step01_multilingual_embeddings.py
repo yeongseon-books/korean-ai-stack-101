@@ -1,0 +1,37 @@
+"""Compare Korean and English sentences with a multilingual embedding model."""
+
+from __future__ import annotations
+
+from itertools import combinations
+
+import numpy as np
+from sentence_transformers import SentenceTransformer
+
+MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+SENTENCES = [
+    "Spring weather in Seoul is short and unpredictable.",
+    "서울의 봄 날씨는 짧고 변덕스럽습니다.",
+    "Jeju Island is a popular summer destination.",
+    "제주도는 여름 휴가지로 인기가 많습니다.",
+]
+
+
+def cosine_similarity(left: np.ndarray, right: np.ndarray) -> float:
+    return float(np.dot(left, right) / (np.linalg.norm(left) * np.linalg.norm(right)))
+
+
+def main() -> None:
+    print(f"Loading multilingual model: {MODEL_NAME}")
+    model = SentenceTransformer(MODEL_NAME)
+    embeddings = model.encode(SENTENCES, normalize_embeddings=True)
+    print("Cross-language similarity comparison")
+    print("=" * 60)
+    for left_index, right_index in combinations(range(len(SENTENCES)), 2):
+        score = cosine_similarity(embeddings[left_index], embeddings[right_index])
+        print(f"{SENTENCES[left_index]} <> {SENTENCES[right_index]}")
+        print(f"Similarity: {score:.4f}")
+        print("-" * 60)
+
+
+if __name__ == "__main__":
+    main()

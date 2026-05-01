@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.venv/
+summary.txt
+*.faiss
+*.pkl

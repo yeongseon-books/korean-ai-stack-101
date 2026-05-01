@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 import faiss
 from sentence_transformers import SentenceTransformer
 
@@ -16,8 +18,8 @@ INDEX_PATH = "korean_documents.faiss"
 
 def build_index(documents: list[str]) -> tuple[faiss.IndexFlatIP, int]:
     model = SentenceTransformer(MODEL_NAME)
-    embeddings = model.encode(documents, normalize_embeddings=True).astype("float32")
-    index = faiss.IndexFlatIP(embeddings.shape[1])
+    embeddings = model.encode(documents, normalize_embeddings=True, convert_to_numpy=True).astype("float32")
+    index: Any = faiss.IndexFlatIP(embeddings.shape[1])
     index.add(embeddings)
     return index, int(embeddings.shape[1])
 
